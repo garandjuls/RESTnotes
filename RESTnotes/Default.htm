@@ -1,0 +1,143 @@
+﻿<!doctype HTML>
+<html>
+<head>
+    <title>REST Note App</title>
+</head>
+<body>
+    <form id="form1">
+        <h1>Note App using REST API</h1>
+        <span style="color:red;">*</span>=Required field
+        <div style="border:1px solid black;">
+            <h1>Create</h1>
+            Body<span style="color:red;">*</span><input type="text" id="txtbody1" />
+            <input type="button" value="Create (Post)" onclick="notecreate()" />
+        </div>
+        <div style="border:1px solid black;">
+            <h1>Read</h1>
+            ID<input type="text" id="txtid2" />
+            Filter<input type="text" id="txtfilter" />
+            <input type="button" value="Read (Get)" onclick="noteread()" />
+        </div>
+        <div style="border:1px solid black;">
+            <h1>Update</h1>
+            ID<span style="color:red;">*</span><input type="text" id="txtid3" />
+            Body<span style="color:red;">*</span><input type="text" id="txtbody3" />
+            <input type="button" value="Update (Put)" onclick="noteupdate()" />
+        </div>
+        <div style="border:1px solid black;">
+            <h1>Delete</h1>
+            ID<span style="color:red;">*</span><input type="text" id="txtid4" />
+            <input type="button" value="Delete (Delete)" onclick="notedelete()" />
+        </div>
+
+        Formatted response
+        <table id="table1" border="1" title="All Notes">
+            <thead >
+                <tr>
+                    <td>ID</td>
+                    <td>Body</td>
+                </tr>
+            </thead>
+        </table>
+
+        <div>
+            Raw response
+        </div>
+        <div>
+            <input type="text" id="txtraw" style="width:80%;" />
+        </div>
+
+        <script type="text/javascript">
+        // do async
+        var xhttp;
+        // url to post to
+        function xsyncJsonPost(purl,pmethod,params) {
+            if (window.XMLHttpRequest) {
+                xhttp = new XMLHttpRequest();
+            } else {
+                // code for IE6, IE5
+                xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xhttp.onreadystatechange = function () {
+                if (xhttp.readyState == 4 && xhttp.status == 200) {
+                    showit(xhttp.responseText);
+                }
+            };
+//            if (pmethod.toUpperCase() != "GET")
+            //  xmlhttp.setRequestHeader("Content-type", "application/json");
+            xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+
+          //  xhttp.open(pmethod, purl, false);
+        //   xhttp.send(params);
+        }
+        function showit(ptext) {
+//            alert(ptext);
+            document.getElementById("txtraw").value = ptext;
+            var myObj = JSON.parse(ptext);
+            var table = document.getElementById("table1");
+
+            if (isNaN(myObj.length)) {                
+                var row = table.insertRow(table.rows.length);
+                var cell1 = row.insertCell(0);
+                var cell2 = row.insertCell(1);
+
+                cell1.innerHTML = myObj.id;
+                cell2.innerHTML = myObj.body;
+            }
+            else {
+                for (x in myObj) {
+                    var row = table.insertRow(table.rows.length);
+                    var cell1 = row.insertCell(0);
+                    var cell2 = row.insertCell(1);
+
+                    cell1.innerHTML = myObj[x].id;
+                    cell2.innerHTML = myObj[x].body;
+                }
+            }
+        }
+
+
+        function noteread() {
+            var id = document.getElementById("txtid2").value;
+            var filter = document.getElementById("txtfilter").value;
+            var query = "";
+            if (id.length > 0)
+                query = "/" + id;
+            else
+                if (filter.length > 0)
+                    query += "?query=" + filter;
+            syncJsonPost("http://localhost:63929/api/note" + query, "GET","");
+        }
+        function noteupdate() {
+            var query = "";
+            syncJsonPost("http://localhost:63929/api/note" + query, "PUT","")
+        }
+        function notedelete() {
+            var query = "";
+            syncJsonPost("http://localhost:63929/api/note" + query, "DELETE","")
+        }
+
+//                syncJsonPost("https://api.github.com/users/garandjuls/repos", "GET");
+//        
+            //      
+
+        function notecreate() {
+            alert(0);
+            var query = "";
+            var bod = document.getElementById("txtbody1").value;
+            var parameters = {
+                "id": 0,
+                "body": bod
+            };
+            var js = JSON.stringify(parameters);
+            alser(js);
+            //       syncJsonPost("http://localhost:63929/api/note", "POST", js);
+        }
+
+
+        notecreate();
+        </script>
+
+    </form>
+</body>
+</html>

@@ -1,1 +1,81 @@
+﻿There are two seperate tasks to complete for this exercise; 
+one for Backend work and another for Frontend work.
 
+BACKEND
+Your Backend task is to build a simple RESTful, JSON API to power a note-taking application.
+
+GUIDELINES
+The API should be implemented in Java, C#, or C++. Any frameworks you use are up to you. 
+I should be able to download your code from github.com and run it on my machine, 
+so you should include instructions for setup/conﬁguration. 
+The easier it is for me to setup and deploy, the better.
+
+NOTES
+The notes API should live at the route /api/notes . So, if your API server is running on localhost, 
+I would expect to access the 'notes' API at http://localhost/api/notes .
+
+THE NOTE MODEL
+{  "id" : 1,  "body" : "Ask Larry about the TPS reports." }
+
+CREATE A NEW NOTE
+When I POST note JSON to the notes route, a new note will be created.
+POST /api/notes 
+BODY a note
+Returns: a saved note...
+
+Example
+curl -i -H "Content-Type: application/json" -X POST -d '{"body" : "Pick up milk!"}' http://localhost:63929/api/notes
+
+Returns:
+{  "id" : 2,  "body" : "Pick up milk!" }
+
+GET AN EXISTING NOTE
+I can get a note using an API call:
+GET /api/notes/{id} 
+Returns: the requested note..
+Example:
+curl -i -H "Content-Type: application/json" -X GET http://localhost/api/notes/1
+
+Returns:
+{  "id" : 1,  "body" : "Ask Larry about the TPS reports." }
+
+GET ALL OF MY NOTES
+I can get all notes using an API call:
+GET /api/notes 
+Returns: A list of my notes
+Example:
+curl -i -H "Content-Type: application/json" -X GET http://localhost:63929/api/notes
+http://localhost/api/notes
+http://localhost:63929/api/notes
+Returns:
+[    {      "id" : 2,      "body" : "Pick up milk!"    },    {      "id" : 1,      "body" : "Ask Larry about the TPS reports."    } ]
+
+Also, I'd like to be able to pass in an optional query parameter that will allow me to search notes by their bodies. 
+Example:curl -i -H "Content-Type: application/json" -X GET http://localhost/api/notes?query=m ilk
+Returns a list of every note with the word 'milk' in it.
+-----------------
+FRONT END
+Your task is to integrate with the Github REST API to search for issues in the Angular Github repo for 
+the previous 7 days.
+Use the Github Issues API. As before, the frameworks are up to you, 
+however working with AngularJS or ReactJS will be seen as a plus. 
+With the results from the API, display, in HTML, the returned values with their 
+title, body, user login, and assignee login.
+The HTML display can be as plain or intricate as you like, in any manner you choose.
+
+https://api.github.com/repos/vmg/redcarpet/issues?state=all&since=2017-1-01
+
+//                syncJsonPost("https://api.github.com/users/garandjuls/repos", "GET");
+//        
+            //      
+
+post new note
+curl -i -H "Content-Type: application/json" -X POST -d "{\"body\" : \"Pick up milk!\"}" http://localhost:63929/api/notes
+get existing note
+curl -i -H "Content-Type: application/json" -X GET http://localhost:63929/api/notes/1
+get all notes
+curl -i -H "Content-Type: application/json" -X GET http://localhost:63929/api/notes
+update a note
+curl -i -H "Content-Type: application/json" -X PUT -d "{\"id\":1,\"body\" : \"First Noted\"}" http://localhost:63929/api/notes
+delete a note
+curl -i -H "Content-Type: application/json" -X DELETE http://localhost:63929/api/notes/1
